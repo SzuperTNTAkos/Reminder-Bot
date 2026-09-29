@@ -74,6 +74,7 @@ async function edit(interaction, client){
     }
     else{
         let toChange = []
+        let newData = {}
         let changes = ''
         const databaseId = db
         .prepare(`SELECT id FROM (SELECT id, ROW_NUMBER() OVER (ORDER BY year, month, day) AS rownum FROM exams WHERE guildid = '${interaction.guildId}') WHERE rownum = ${interaction.options.get('id').value}`)
@@ -82,32 +83,39 @@ async function edit(interaction, client){
         .prepare(`SELECT * FROM exams WHERE id = '${databaseId}'`)
         .get()
         if (interaction.options.get('date') !== null){
-            toChange.push(` year = ${date.getFullYear()}`)
-            toChange.push(` month = ${date.getMonth()}`)
-            toChange.push(` day = ${date.getDate()}`)
+            toChange.push(' year = @year, month = @month, day = @day')
+            newData = {
+                year: date.getFullYear(),
+                month: date.getMonth(),
+                day: date.getDate(),
+            }
             const now = new Date()
             changes += `- ${oldData.year > now.getFullYear() ? `${oldData.year}.` : ''}${`${oldData.month + 1}`.padStart(2, '0')}.${`${oldData.day}`.padStart(2, '0')}. -> ${date.getFullYear() > now.getFullYear() ? `${date.getFullYear()}.` : ''}${`${date.getMonth() + 1}`.padStart(2, '0')}.${`${date.getDate()}`.padStart(2, '0')}.\n`
         }
         if (interaction.options.get('subject') !== null){
-            toChange.push(` subject = '${interaction.options.get('subject').value}'`)
+            toChange.push(' subject = @subject')
+            newData.subject = interaction.options.get('subject').value
             changes += `- ${oldData.subject} -> ${interaction.options.get('subject').value}\n`
         }
         if (interaction.options.get('type') !== null){
-            toChange.push(` type = '${interaction.options.get('type').value}'`)
+            toChange.push(' type = @type')
+            newData.type = interaction.options.get('type').value
             changes += `- ${oldData.type} -> ${interaction.options.get('type').value}\n`
         }
         if (interaction.options.get('topic') !== null){
-            toChange.push(` topic = '${interaction.options.get('topic').value}'`)
+            toChange.push(' topic = @topic')
+            newData.topic = interaction.options.get('topic').value
             changes += `- ${oldData.topic} -> ${interaction.options.get('topic').value}\n`
         }
         if (interaction.options.get('special_pings') !== null){
-            toChange.push(` pings = '${toCsv(interaction.options.get('special_pings').value)}'`)
+            toChange.push(' pings = @pings')
+            newData.pings = toCsv(interaction.options.get('special_pings').value)
             changes += `- ${await listPings({ping: false, pings: oldData.pings, guild: interaction.guild, client: client})} -> ${await listPings({ping: false, pings: interaction.options.get('special_pings').value.split(' ').map(e => e.slice(2, e.length - 1)), guild: interaction.guild, client: client})}`
         }
-
+        console.log(newData)
         db
         .prepare(`UPDATE exams SET${toChange} WHERE id = ${databaseId}`)
-        .run()
+        .run(newData)
         const embed = new EmbedBuilder()
         .setTitle('Success')
         .setColor(0x00C000)
