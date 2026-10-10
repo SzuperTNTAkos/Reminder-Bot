@@ -104,6 +104,9 @@ const commands = [
         description: 'Resets and deletes the configs.'
     },
     {
+        name: 'calendar',
+        description: 'A cleaner way to see your duties.'
+    }
         name: 'manageroles',
         description: 'Lets the admins set which commands can be run by what roles (including @everyone or admin).',
         options: [
