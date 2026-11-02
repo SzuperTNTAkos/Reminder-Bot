@@ -7,6 +7,7 @@ This bot reminds the server about upcoming exams at a specified time, a certain 
 - **/getconfig**: Displays all config data. If the channel in which the bot was configured is deleted, the config settings go with it.
 - **/exam**: Adds a new exam to the list of exams. Specifying a date that is already over will be assumed to be next year.
 - **/list**: Lists all upcoming exams along whith their ids.
+- **/edit**: Edits the exam with the specified id
 - **/remove**: Removes the exam with the specified id.
 - **/removeall**: Removes all exams.
 - **/reset**: Removes and deletes the configs.
