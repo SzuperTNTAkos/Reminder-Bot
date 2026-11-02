@@ -1,5 +1,5 @@
 const Database = require('better-sqlite3');
-const { EmbedBuilder, time } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { listPings, isValidPing } = require('../misc');
 const db = new Database('database.db', {fileMustExist: true, readonly: true})
 
