@@ -82,7 +82,7 @@ async function exam(interaction, client){
         }
         embed
         .setColor(0x00C000)
-        .setTitle('Successfully added new exam')
+        .setTitle('Successfully added new exam ✅')
         .setDescription(result)
     }
     else{
