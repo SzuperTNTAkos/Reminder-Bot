@@ -37,8 +37,8 @@ async function list(interaction, client){
             .setColor(conf.embedcolor)
             let fieldscnt = 0
             let charcnt = title.length
-            let nm = ''
-            let val = ''
+            //let nm = ''
+            //let val = ''
             let result = []
             await client.channels.fetch(interaction.channelId)
             
@@ -52,15 +52,10 @@ async function list(interaction, client){
                 const dayStr = `${exams[i].day}`.padStart(2, '0');
                 const dateFormatted = `${yearStr}${monthStr}.${dayStr}. (${dayOfWeek})`;
                 // Lazy for more comments brr
-                nm = `${i + 1}. ${exams[i].subject} — ${exams[i].type}`;
+                const nm = `${i + 1}. ${exams[i].subject} — ${exams[i].type}`;
                 const pingsText = await listPings({pings: exams[i].pings, ping: false, guild: interaction.guild, client: client});
                 // Create embed value
-                const valParts = [
-                    `- **Date:** ${dateFormatted}`,
-                    exams[i].topic ? `- **Topic:** ${exams[i].topic}` : null,
-                    `- **Pings:** ${pingsText}`
-                ];
-                val = valParts.filter(Boolean).join('\n');
+                const val = `- **Date:** ${dateFormatted}${exams[i].topic ? `\n- **Topic:** ${exams[i].topic}` : ''}${exams[i].pings ? `\n- **Pings:** ${pingsText}` : ''}`
 
                 if(fieldscnt === 25 || charcnt + nm.length + val.length > 6000){
                     result.push(embed)
