@@ -18,7 +18,7 @@ async function exam(interaction, client){
     const isnottoolongtopiclen = (interaction.options.get('topic')?.value || '').length <= topiclen
     let isvalidpings = interaction.options.get('special_pings') === null || /^<@&?\d{1,25}>( <@&?\d{1,25}>)*$/.test(interaction.options.get('special_pings').value)
     if(interaction.options.get('special_pings') !== null){
-        const pingarr = interaction.options.get('special_pings').value.split(' ').map(e => e.slice(2, interaction.options.get('special_pings').value.length - 1))
+        const pingarr = interaction.options.get('special_pings').value.split(' ').map(e => e.slice(2, e.length - 1))
         let i = 0
         while(isvalidpings && i < pingarr.length){
             isvalidpings = await isValidPing(pingarr[i], client)
