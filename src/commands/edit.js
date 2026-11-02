@@ -112,7 +112,6 @@ async function edit(interaction, client){
             newData.pings = toCsv(interaction.options.get('special_pings').value)
             changes += `- ${await listPings({ping: false, pings: oldData.pings, guild: interaction.guild, client: client})} -> ${await listPings({ping: false, pings: interaction.options.get('special_pings').value.split(' ').map(e => e.slice(2, e.length - 1)), guild: interaction.guild, client: client})}`
         }
-        console.log(newData)
         db
         .prepare(`UPDATE exams SET${toChange} WHERE id = ${databaseId}`)
         .run(newData)
